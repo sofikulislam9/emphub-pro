@@ -10,8 +10,4 @@ public class AdminController {
     public String homePage() {
         return "dashboard";
     }
-
-
-
-
 }
