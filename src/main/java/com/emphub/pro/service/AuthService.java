@@ -1,4 +1,8 @@
 package com.emphub.pro.service;
 
-public class AuthService {
+import com.emphub.pro.model.User;
+
+public interface AuthService {
+
+    User login(String username, String password);
 }

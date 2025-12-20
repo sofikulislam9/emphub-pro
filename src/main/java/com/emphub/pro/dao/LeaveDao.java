@@ -1,4 +1,13 @@
 package com.emphub.pro.dao;
 
-public class LeaveDao {
+import com.emphub.pro.model.LeaveRequest;
+
+import java.util.List;
+
+public interface LeaveDao {
+
+    void applyLeave(LeaveRequest leave);
+    List<LeaveRequest> getLeavesByEmployee(int employeeId);
+    List<LeaveRequest> getAllLeaves();
+    void updateStatus(int leaveId, String status);
 }
