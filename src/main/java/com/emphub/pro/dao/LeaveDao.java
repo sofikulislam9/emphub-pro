@@ -7,7 +7,12 @@ import java.util.List;
 public interface LeaveDao {
 
     void applyLeave(LeaveRequest leave);
-    List<LeaveRequest> getLeavesByEmployee(int employeeId);
-    List<LeaveRequest> getAllLeaves();
+
+    List<LeaveRequest> findAll();
+
+    List<LeaveRequest> findByEmployeeId(int employeeId);
+
     void updateStatus(int leaveId, String status);
+
+
 }

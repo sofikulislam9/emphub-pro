@@ -6,24 +6,23 @@ public class Employee {
 
     private int id;
     private String name;
+    private String username;
     private String email;
     private String department;
     private String designation;
     private LocalDate joinDate;
-    private String status;
 
-    public Employee(){
-
+    public Employee() {
     }
 
-    public Employee(int id, String name, String email, String department, String designation, LocalDate joinDate, String status) {
+    public Employee(int id, String name, String username, String email, String department, String designation, LocalDate joinDate) {
         this.id = id;
         this.name = name;
+        this.username = username;
         this.email = email;
         this.department = department;
         this.designation = designation;
         this.joinDate = joinDate;
-        this.status = status;
     }
 
     public int getId() {
@@ -40,6 +39,14 @@ public class Employee {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -73,13 +80,5 @@ public class Employee {
     public void setJoinDate(LocalDate joinDate) {
         this.joinDate = joinDate;
     }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
 }
+

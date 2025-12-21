@@ -1,22 +1,20 @@
 package com.emphub.pro.model;
 
-public class User {
+public class Admin {
 
     private int id;
+    private String name;
     private String username;
     private String password;
-    private String role;
-    private String status;
 
-    public User() {
+    public Admin() {
     }
 
-    public User(int id, String username, String password, String role, String status) {
+    public Admin(int id, String name, String username, String password) {
         this.id = id;
+        this.name = name;
         this.username = username;
         this.password = password;
-        this.role = role;
-        this.status = status;
     }
 
     public int getId() {
@@ -25,6 +23,14 @@ public class User {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getUsername() {
@@ -41,21 +47,5 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 }

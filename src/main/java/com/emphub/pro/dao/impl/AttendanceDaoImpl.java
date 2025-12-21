@@ -3,98 +3,77 @@ package com.emphub.pro.dao.impl;
 import com.emphub.pro.dao.AttendanceDao;
 import com.emphub.pro.model.Attendance;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Date;
-import java.sql.Time;
+import java.sql.ResultSet;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+
 
 @Repository
 public class AttendanceDaoImpl implements AttendanceDao {
 
     private JdbcTemplate jdbcTemplate;
 
-    public AttendanceDaoImpl(JdbcTemplate jdbcTemplate){
+    public AttendanceDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
+
+    private final RowMapper<Attendance> rowMapper = (ResultSet rs, int rowNum) -> {
+        Attendance a = new Attendance();
+        a.setId(rs.getInt("id"));
+        a.setEmployeeId(rs.getInt("employee_id"));
+        a.setDate(rs.getDate("date").toLocalDate());
+        a.setCheckIn(rs.getTime("check_in") == null ? null : rs.getTime("check_in").toLocalTime());
+        a.setCheckOut(rs.getTime("check_out") == null ? null : rs.getTime("check_out").toLocalTime());
+        a.setTotalHours(rs.getDouble("total_hours"));
+        return a;
+    };
 
     @Override
     public void checkIn(int employeeId) {
 
         String sql = "INSERT INTO attendance (employee_id, date, check_in) VALUES (?, ?, ?)";
-
-        jdbcTemplate.update(
-                sql,
-                employeeId,
-                Date.valueOf(LocalDate.now()),
-                Time.valueOf(LocalTime.now())
-        );
+        jdbcTemplate.update(sql, employeeId, LocalDate.now(), LocalTime.now());
     }
 
     @Override
     public void checkOut(int employeeId) {
 
-        String selectSql =
-                "SELECT id, check_in FROM attendance WHERE employee_id=? AND date=?";
+        Attendance a = getTodayAttendance(employeeId, LocalDate.now());
+        LocalTime checkOut  = LocalTime.now();
+        double hours = Duration.between(a.getCheckIn(), checkOut).toMinutes() / 60.0;
 
-        String updateSql =
-                "UPDATE attendance SET check_out=?, total_hours=? WHERE id=?";
+        String sql = "UPDATE attendance SET check_out = ?, total_hours = ? WHERE employee_id = ? AND date = ?";
 
-        jdbcTemplate.query(selectSql,
-                new Object[]{employeeId, Date.valueOf(LocalDate.now())},
-                rs -> {
+        jdbcTemplate.update(sql, checkOut, hours, employeeId, LocalDate.now());
 
-                    int attendanceId = rs.getInt("id");
-                    LocalTime checkIn = rs.getTime("check_in").toLocalTime();
-                    LocalTime checkOut = LocalTime.now();
+    }
 
-                    double totalHours =
-                            Duration.between(checkIn, checkOut).toMinutes() / 60.0;
+    @Override
+    public Attendance getTodayAttendance(int employeeId, LocalDate date) {
 
-                    jdbcTemplate.update(
-                            updateSql,
-                            Time.valueOf(checkOut),
-                            totalHours,
-                            attendanceId
-                    );
-                }
-        );
+        String sql =  "SELECT * FROM attendance WHERE employee_id = ? AND date = ?";
+
+        List<Attendance> list = jdbcTemplate.query(sql, rowMapper, employeeId, date);
+        return list.isEmpty() ? null : list.get(0);
     }
 
     @Override
     public List<Attendance> getAttendanceByEmployee(int employeeId) {
 
-        String sql = "SELECT * FROM attendance WHERE employee_id=?";
+        String sql = "SELECT * FROM attendance WHERE employee_id = ? ORDER BY date DESC";
 
-        return jdbcTemplate.query(
-                sql,
-                new Object[]{employeeId},
-                (rs, rowNum) -> {
+        return jdbcTemplate.query(sql, rowMapper, employeeId);
+    }
 
-                    Attendance a = new Attendance();
+    @Override
+    public List<Attendance> getAllAttendance() {
 
-                    a.setId(rs.getInt("id"));
-                    a.setEmployeeId(rs.getInt("employee_id"));
-                    a.setDate(rs.getDate("date").toLocalDate());
-
-                    Time checkIn = rs.getTime("check_in");
-                    if (checkIn != null) {
-                        a.setCheckIn(checkIn.toLocalTime());
-                    }
-
-                    Time checkOut = rs.getTime("check_out");
-                    if (checkOut != null) {
-                        a.setCheckOut(checkOut.toLocalTime());
-                    }
-
-                    a.setTotalHours(rs.getDouble("total_hours"));
-                    return a;
-                }
-        );
+        String sql = "SELECT * FROM attendance ORDER BY date DESC";
+        return jdbcTemplate.query(sql, rowMapper);
     }
 }
-
-

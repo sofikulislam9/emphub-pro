@@ -6,7 +6,8 @@ import java.util.List;
 
 public interface EmployeeDao {
 
-    void save(Employee emp);
+    Employee findByUsernameAndEmail(String username, String email);
+
     List<Employee> findAll();
 
 }

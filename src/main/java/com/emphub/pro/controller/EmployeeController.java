@@ -1,7 +1,11 @@
 package com.emphub.pro.controller;
 
 import com.emphub.pro.model.Employee;
+import com.emphub.pro.model.LeaveRequest;
+import com.emphub.pro.service.AttendanceService;
 import com.emphub.pro.service.EmployeeService;
+import com.emphub.pro.service.LeaveService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,33 +23,93 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-    @GetMapping
-    public String getEmployees(Model model) {
+    @Autowired
+    private LeaveService leaveService;
 
-        model.addAttribute("employee", employeeService.getAllEmployees());
+    @Autowired
+    private AttendanceService attendanceService;
 
-        return "employee";
+    @GetMapping("/dashboard")
+    public String dashboard() {
+
+        return "employee-dashboard";
     }
 
-    @PostMapping("/add")
-    public String add(@RequestParam("name") String name,
-                      @RequestParam("email") String email,
-                      @RequestParam("department") String department,
-                      @RequestParam("designation") String designation) {
+    @GetMapping("/profile")
+    public String viewEmployees(Model model) {
 
-        Employee emp = new Employee();
+        model.addAttribute("employees", employeeService.getAllEmployees());
+        return "employee-profile";
+    }
 
-        emp.setName(name);
-        emp.setEmail(email);
-        emp.setDepartment(department);
-        emp.setDesignation(designation);
-        emp.setJoinDate(LocalDate.now());
-        emp.setStatus("ACTIVE");
+    @GetMapping("/leave")
+    public String viewLeaveRequest(HttpSession session, Model model) {
 
-        employeeService.addEmployee(emp);
+        Employee employee = (Employee) session.getAttribute("employee");
 
-        return "redirect:/employee";
+        model.addAttribute("myLeaves",
+                leaveService.getEmployeeLeaves(employee.getId()));
 
+        return "employee-leave";
+    }
+
+    @GetMapping("/leave/apply")
+    public String applyLeavePage() {
+        return "apply-leave";
+    }
+
+    @PostMapping("/leave/apply-page")
+    public String applyLeave(
+            @RequestParam("fromDate") String fromDate,
+            @RequestParam("toDate")String toDate,
+            @RequestParam("reason")String reason,
+            HttpSession session) {
+
+        Employee employee = (Employee) session.getAttribute("employee");
+
+        LeaveRequest leave = new LeaveRequest();
+        leave.setEmployeeId(employee.getId());
+        leave.setFromDate(LocalDate.parse(fromDate));
+        leave.setToDate(LocalDate.parse(toDate));
+        leave.setReason(reason);
+
+        leaveService.applyLeave(leave);
+
+        return "redirect:/employee/leave";
+    }
+
+    @GetMapping("/attendance")
+    public String attendance(){
+        return "employee-attendance";
+    }
+
+    @GetMapping("/attendance/view")
+    public String viewAttendance(HttpSession session, Model model) {
+
+        Employee employee = (Employee) session.getAttribute("employee");
+
+        model.addAttribute("attendanceList",
+                attendanceService.employeeAttendance(employee.getId()));
+
+        return "attendance-view";
+    }
+
+    @PostMapping("/attendance/checkin")
+    public String checkIn(HttpSession session) {
+
+        Employee employee = (Employee) session.getAttribute("employee");
+        attendanceService.checkIn(employee.getId());
+
+        return "redirect:/employee/attendance";
+    }
+
+    @PostMapping("/attendance/checkout")
+    public String checkOut(HttpSession session) {
+
+        Employee employee = (Employee) session.getAttribute("employee");
+        attendanceService.checkOut(employee.getId());
+
+        return "redirect:/employee/attendance";
     }
 
 }

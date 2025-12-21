@@ -1,5 +1,6 @@
 package com.emphub.pro.service.impl;
 
+
 import com.emphub.pro.dao.LeaveDao;
 import com.emphub.pro.model.LeaveRequest;
 import com.emphub.pro.service.LeaveService;
@@ -20,17 +21,17 @@ public class LeaveServiceImpl implements LeaveService {
     }
 
     @Override
-    public List<LeaveRequest> getEmployeeLeaves(int employeeId) {
-        return leaveDao.getLeavesByEmployee(employeeId);
-    }
-
-    @Override
     public List<LeaveRequest> getAllLeaves() {
-        return leaveDao.getAllLeaves();
+        return leaveDao.findAll();
     }
 
     @Override
-    public void updateLeaveStatus(int leaveId, String status) {
+    public List<LeaveRequest> getEmployeeLeaves(int employeeId) {
+        return leaveDao.findByEmployeeId(employeeId);
+    }
+
+    @Override
+    public void updateStatus(int leaveId, String status) {
         leaveDao.updateStatus(leaveId, status);
     }
 }

@@ -4,8 +4,11 @@ import com.emphub.pro.model.Employee;
 
 import java.util.List;
 
+
 public interface EmployeeService {
 
-    void addEmployee(Employee emp);
+    Employee login(String username, String email);
+
     List<Employee> getAllEmployees();
+
 }
