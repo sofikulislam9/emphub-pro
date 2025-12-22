@@ -16,7 +16,7 @@ import java.util.List;
 @Repository
 public class AttendanceDaoImpl implements AttendanceDao {
 
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     public AttendanceDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -37,7 +37,11 @@ public class AttendanceDaoImpl implements AttendanceDao {
     public void checkIn(int employeeId) {
 
         String sql = "INSERT INTO attendance (employee_id, attendance_date, check_in) VALUES (?, ?, ?)";
-        jdbcTemplate.update(sql, employeeId, LocalDate.now(), LocalTime.now());
+
+            jdbcTemplate.update(sql,
+                    employeeId,
+                    LocalDate.now(),
+                    LocalTime.now());
     }
 
     @Override

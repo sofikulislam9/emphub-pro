@@ -21,6 +21,11 @@ public class LeaveServiceImpl implements LeaveService {
     }
 
     @Override
+    public boolean hasPendingLeave(int employeeId) {
+        return leaveDao.hasPendingLeave(employeeId);
+    }
+
+    @Override
     public List<LeaveRequest> getAllLeaves() {
         return leaveDao.findAll();
     }

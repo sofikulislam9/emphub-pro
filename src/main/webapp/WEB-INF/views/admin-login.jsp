@@ -76,6 +76,18 @@
 <div class="login-box">
     <h2>Admin Login</h2>
 
+    <c:if test="${not empty error}">
+            <div style="
+                background:#fdecea;
+                color:#c0392b;
+                padding:12px;
+                border-radius:6px;
+                margin-bottom:15px;
+                font-weight:bold;">
+                ${error}
+            </div>
+        </c:if>
+
     <form action="${pageContext.request.contextPath}/admin/login" method="post">
         <input type="text" name="username" placeholder="Admin Username" required>
         <input type="password" name="password" placeholder="Password" required>

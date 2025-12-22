@@ -27,8 +27,27 @@
         }
 
         h1 {
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             color: #333;
+        }
+
+        /* 🔹 Message styles */
+        .success-msg {
+            background: #eafaf1;
+            color: #27ae60;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .error-msg {
+            background: #fdecea;
+            color: #c0392b;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-weight: bold;
         }
 
         form {
@@ -99,6 +118,20 @@
 
 <div class="container">
     <h1>Attendance</h1>
+
+    <!-- ✅ Success Message -->
+    <c:if test="${not empty success}">
+        <div class="success-msg">
+            ${success}
+        </div>
+    </c:if>
+
+    <!-- ❌ Error Message -->
+    <c:if test="${not empty error}">
+        <div class="error-msg">
+            ${error}
+        </div>
+    </c:if>
 
     <!-- Check In -->
     <form action="${pageContext.request.contextPath}/employee/attendance/checkin"

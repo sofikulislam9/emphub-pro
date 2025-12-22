@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class AdminDaoImpl implements AdminDao {
 
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     public AdminDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;

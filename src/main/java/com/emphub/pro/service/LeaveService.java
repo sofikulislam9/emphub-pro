@@ -8,6 +8,8 @@ public interface LeaveService {
 
     void applyLeave(LeaveRequest leave);
 
+    boolean hasPendingLeave(int employeeId);
+
     List<LeaveRequest> getAllLeaves();
 
     List<LeaveRequest> getEmployeeLeaves(int employeeId);

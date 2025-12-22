@@ -97,6 +97,19 @@
 <div class="container">
     <h1>My Leave Requests</h1>
 
+    <c:if test="${not empty error}">
+        <div style="
+            background:#fdecea;
+            color:#c0392b;
+            padding:12px;
+            border-radius:6px;
+            margin-bottom:15px;
+            font-weight:bold;">
+            ${error}
+        </div>
+    </c:if>
+
+
     <!-- Leave List -->
     <table>
         <thead>

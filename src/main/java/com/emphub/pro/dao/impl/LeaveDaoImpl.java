@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public class LeaveDaoImpl implements LeaveDao {
 
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     public LeaveDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -28,6 +28,15 @@ public class LeaveDaoImpl implements LeaveDao {
                 leave.getToDate(),
                 leave.getReason()
         );
+    }
+
+    @Override
+    public boolean hasPendingLeave(int employeeId) {
+
+        String sql = "SELECT COUNT(*) FROM leave_request WHERE employee_id=? AND status='PENDING'";
+
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, employeeId);
+        return count != null && count > 0;
     }
 
     @Override

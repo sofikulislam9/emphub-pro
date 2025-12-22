@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 
@@ -54,7 +55,20 @@ public class EmployeeController {
     }
 
     @GetMapping("/leave/apply")
-    public String applyLeavePage() {
+    public String applyLeavePage(HttpSession session, Model model) {
+
+        Employee employee = (Employee) session.getAttribute("employee");
+
+        if (leaveService.hasPendingLeave(employee.getId())) {
+            model.addAttribute("error", "You already have a pending leave request." +
+                    " Please wait until it is approved or rejected.");
+
+            model.addAttribute("myLeaves",
+                    leaveService.getEmployeeLeaves(employee.getId()));
+
+           return "employee-leave";
+        }
+
         return "apply-leave";
     }
 
@@ -63,7 +77,7 @@ public class EmployeeController {
             @RequestParam("fromDate") String fromDate,
             @RequestParam("toDate")String toDate,
             @RequestParam("reason")String reason,
-            HttpSession session) {
+            HttpSession session, RedirectAttributes ra) {
 
         Employee employee = (Employee) session.getAttribute("employee");
 
@@ -95,19 +109,31 @@ public class EmployeeController {
     }
 
     @PostMapping("/attendance/checkin")
-    public String checkIn(HttpSession session) {
+    public String checkIn(HttpSession session, RedirectAttributes ra) {
 
         Employee employee = (Employee) session.getAttribute("employee");
-        attendanceService.checkIn(employee.getId());
 
+        try {
+            attendanceService.checkIn(employee.getId());
+            ra.addFlashAttribute("success", "Checked in successfully");
+
+        }  catch (IllegalStateException e) {
+            ra.addFlashAttribute("error", e.getMessage());
+        }
         return "redirect:/employee/attendance";
     }
 
     @PostMapping("/attendance/checkout")
-    public String checkOut(HttpSession session) {
+    public String checkOut(HttpSession session, RedirectAttributes ra) {
 
         Employee employee = (Employee) session.getAttribute("employee");
-        attendanceService.checkOut(employee.getId());
+
+        try {
+            attendanceService.checkOut(employee.getId());
+            ra.addFlashAttribute("success", "Checked out successfully");
+        } catch (IllegalStateException e) {
+            ra.addFlashAttribute("error", e.getMessage());
+        }
 
         return "redirect:/employee/attendance";
     }

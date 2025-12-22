@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public class EmployeeDaoImpl implements EmployeeDao {
 
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     public EmployeeDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -58,7 +58,9 @@ public class EmployeeDaoImpl implements EmployeeDao {
     @Override
     public Employee findByUsernameAndEmail(String username, String email) {
 
-            return jdbcTemplate.queryForObject(LOGIN_SQL, rowMapper, username, email);
+        List<Employee> employees = jdbcTemplate.query(LOGIN_SQL, rowMapper, username, email);
+
+            return employees.isEmpty() ? null : employees.get(0);
     }
 
     @Override
