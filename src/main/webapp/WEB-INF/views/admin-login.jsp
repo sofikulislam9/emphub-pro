@@ -51,6 +51,23 @@
         button:hover {
             background: #a93226;
         }
+
+        /* Home button at bottom */
+        .home-btn {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 8px 16px;
+            background: #2980b9;
+            color: #fff;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .home-btn:hover {
+            opacity: 0.9;
+        }
     </style>
 </head>
 
@@ -65,6 +82,9 @@
 
         <button type="submit">Login</button>
     </form>
+
+    <!-- Home Button at Bottom -->
+    <a href="${pageContext.request.contextPath}/home" class="home-btn">Home</a>
 </div>
 
 </body>

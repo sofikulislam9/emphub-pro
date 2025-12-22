@@ -24,6 +24,7 @@
             border-radius: 12px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             text-align: center;
+            position: relative; /* for logout button positioning */
         }
 
         h1 {
@@ -94,12 +95,24 @@
         .btn:hover {
             opacity: 0.9;
         }
+
+        /* Logout button styling */
+        .logout-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #e74c3c;
+        }
+
     </style>
 </head>
 
 <body>
 
 <div class="container">
+    <!-- Logout Button -->
+    <a href="${pageContext.request.contextPath}/employee/logout" class="btn logout-btn">Logout</a>
+
     <h1>Hi, <span>${employee.name}</span></h1>
     <p>Welcome to Employee Dashboard</p>
 

@@ -99,7 +99,7 @@
         <!-- Admin Section -->
         <div class="card">
             <h2>Admin</h2>
-            <p>Manage employees, attendance, and reports.</p>
+            <p>Manage employees, attendance, and leaves.</p>
             <a href="${pageContext.request.contextPath}/admin/login" class="btn admin-btn">
                 Admin Login
             </a>

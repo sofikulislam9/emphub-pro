@@ -19,7 +19,7 @@
 
         .container {
             background: #ffffff;
-            width: 900px;
+            width: 1000px;
             padding: 40px;
             border-radius: 12px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
@@ -29,6 +29,28 @@
         h1 {
             margin-bottom: 25px;
             color: #333;
+        }
+
+        .top-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .add-btn {
+            background: #27ae60;
+        }
+
+        .back-btn {
+            background: #2c3e50;
         }
 
         table {
@@ -55,19 +77,10 @@
             background: #f1f1f1;
         }
 
-        .back-btn {
-            display: inline-block;
-            margin-top: 25px;
-            padding: 10px 22px;
-            border-radius: 20px;
-            text-decoration: none;
-            background: #2c3e50;
-            color: #fff;
+        a.id-link {
+            color: #2980b9;
             font-weight: bold;
-        }
-
-        .back-btn:hover {
-            opacity: 0.9;
+            text-decoration: none;
         }
     </style>
 </head>
@@ -77,11 +90,22 @@
 <div class="container">
     <h1>Employee List</h1>
 
+    <div class="top-actions">
+        <a href="${pageContext.request.contextPath}/admin/employee/add" class="btn add-btn">
+            Add New Employee
+        </a>
+
+        <a href="${pageContext.request.contextPath}/admin/dashboard" class="btn back-btn">
+            Back to Dashboard
+        </a>
+    </div>
+
     <table>
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Name</th>
+                <th>Username</th>
                 <th>Email</th>
                 <th>Department</th>
                 <th>Designation</th>
@@ -91,8 +115,14 @@
         <tbody>
             <c:forEach var="emp" items="${employees}">
                 <tr>
-                    <td>${emp.id}</td>
+                    <td>
+                        <a class="id-link"
+                           href="${pageContext.request.contextPath}/admin/employee/view?id=${emp.id}">
+                            ${emp.id}
+                        </a>
+                    </td>
                     <td>${emp.name}</td>
+                    <td>${emp.username}</td>
                     <td>${emp.email}</td>
                     <td>${emp.department}</td>
                     <td>${emp.designation}</td>
@@ -101,10 +131,6 @@
             </c:forEach>
         </tbody>
     </table>
-
-    <a href="${pageContext.request.contextPath}/admin/dashboard" class="back-btn">
-        Back to Dashboard
-    </a>
 </div>
 
 </body>

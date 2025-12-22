@@ -38,7 +38,7 @@ public class EmployeeController {
     @GetMapping("/profile")
     public String viewEmployees(Model model) {
 
-        model.addAttribute("employees", employeeService.getAllEmployees());
+        model.addAttribute("employees", employeeService.getAll());
         return "employee-profile";
     }
 

@@ -26,6 +26,12 @@ public class AuthController {
         return "admin-login";
     }
 
+    @GetMapping("/admin/logout")
+    public String adminLogout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/admin/login";
+    }
+
     @PostMapping("/admin/login")
     public String adminLogin(@RequestParam("username") String username,
                              @RequestParam("password") String password,
@@ -47,6 +53,13 @@ public class AuthController {
     public String employeeLoginPage() {
         return "employee-login";
     }
+
+    @GetMapping("/employee/logout")
+    public String employeeLogout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/employee/login";
+    }
+
 
     @PostMapping("/employee/login")
     public String employeeLogin(@RequestParam("username") String username,
