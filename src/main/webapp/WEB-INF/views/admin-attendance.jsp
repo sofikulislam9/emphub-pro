@@ -79,7 +79,7 @@
         <thead>
         <tr>
             <th>Employee ID</th>
-            <th>Date</th>
+            <th>Attendance Date</th>
             <th>Check In</th>
             <th>Check Out</th>
             <th>Total Hours</th>
@@ -89,7 +89,7 @@
         <c:forEach var="a" items="${attendanceList}">
             <tr>
                 <td>${a.employeeId}</td>
-                <td>${a.date}</td>
+                <td>${a.attendanceDate}</td>
                 <td>${a.checkIn}</td>
                 <td>${a.checkOut}</td>
                 <td>${a.totalHours}</td>

@@ -11,7 +11,7 @@
             padding: 0;
             font-family: Arial, sans-serif;
             background: linear-gradient(to right, #1d2671, #c33764);
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -29,28 +29,6 @@
         h1 {
             margin-bottom: 25px;
             color: #333;
-        }
-
-        .top-actions {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            border-radius: 20px;
-            text-decoration: none;
-            font-weight: bold;
-            color: #fff;
-        }
-
-        .add-btn {
-            background: #27ae60;
-        }
-
-        .back-btn {
-            background: #2c3e50;
         }
 
         table {
@@ -82,6 +60,28 @@
             font-weight: bold;
             text-decoration: none;
         }
+
+        .btn {
+            padding: 10px 22px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .add-btn {
+            background: #27ae60;
+        }
+
+        .back-btn {
+            background: #2c3e50;
+        }
+
+        .bottom-actions {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+        }
     </style>
 </head>
 
@@ -90,47 +90,57 @@
 <div class="container">
     <h1>Employee List</h1>
 
-    <div class="top-actions">
-        <a href="${pageContext.request.contextPath}/admin/employee/add" class="btn add-btn">
+    <!-- Employee Table -->
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Department</th>
+            <th>Designation</th>
+            <th>Join Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:forEach var="emp" items="${employees}">
+            <tr>
+                <td>
+                    <a class="id-link"
+                       href="${pageContext.request.contextPath}/admin/employee/view?id=${emp.id}">
+                        ${emp.id}
+                    </a>
+                </td>
+                <td>${emp.name}</td>
+                <td>${emp.username}</td>
+                <td>${emp.email}</td>
+                <td>${emp.department}</td>
+                <td>${emp.designation}</td>
+                <td>${emp.joinDate}</td>
+            </tr>
+        </c:forEach>
+
+        <c:if test="${empty employees}">
+            <tr>
+                <td colspan="7">No employees found</td>
+            </tr>
+        </c:if>
+        </tbody>
+    </table>
+
+    <!-- Bottom Buttons -->
+    <div class="bottom-actions">
+        <a href="${pageContext.request.contextPath}/admin/employee/add"
+           class="btn add-btn">
             Add New Employee
         </a>
 
-        <a href="${pageContext.request.contextPath}/admin/dashboard" class="btn back-btn">
+        <a href="${pageContext.request.contextPath}/admin/dashboard"
+           class="btn back-btn">
             Back to Dashboard
         </a>
     </div>
-
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Username</th>
-                <th>Email</th>
-                <th>Department</th>
-                <th>Designation</th>
-                <th>Join Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            <c:forEach var="emp" items="${employees}">
-                <tr>
-                    <td>
-                        <a class="id-link"
-                           href="${pageContext.request.contextPath}/admin/employee/view?id=${emp.id}">
-                            ${emp.id}
-                        </a>
-                    </td>
-                    <td>${emp.name}</td>
-                    <td>${emp.username}</td>
-                    <td>${emp.email}</td>
-                    <td>${emp.department}</td>
-                    <td>${emp.designation}</td>
-                    <td>${emp.joinDate}</td>
-                </tr>
-            </c:forEach>
-        </tbody>
-    </table>
 </div>
 
 </body>

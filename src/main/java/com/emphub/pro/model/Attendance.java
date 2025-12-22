@@ -7,19 +7,18 @@ public class Attendance {
 
     private int id;
     private int employeeId;
-    private LocalDate date;
+    private LocalDate attendanceDate;
     private LocalTime checkIn;
     private LocalTime checkOut;
     private double totalHours;
 
     public Attendance() {
-
     }
 
-    public Attendance(int id, int employeeId, LocalDate date, LocalTime checkIn, LocalTime checkOut, double totalHours) {
+    public Attendance(int id, int employeeId, LocalDate attendanceDate, LocalTime checkIn, LocalTime checkOut, double totalHours) {
         this.id = id;
         this.employeeId = employeeId;
-        this.date = date;
+        this.attendanceDate = attendanceDate;
         this.checkIn = checkIn;
         this.checkOut = checkOut;
         this.totalHours = totalHours;
@@ -41,12 +40,12 @@ public class Attendance {
         this.employeeId = employeeId;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDate getAttendanceDate() {
+        return attendanceDate;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setAttendanceDate(LocalDate attendanceDate) {
+        this.attendanceDate = attendanceDate;
     }
 
     public LocalTime getCheckIn() {
