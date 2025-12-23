@@ -10,7 +10,7 @@
         http://www.springframework.org/schema/mvc
         https://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <context:component-scan base-package="com.emphub.pro"/>
+    <context:component-scan base-package="com.emphub"/>
 
     <mvc:annotation-driven/>
 
